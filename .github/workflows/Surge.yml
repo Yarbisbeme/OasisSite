@@ -1,0 +1,46 @@
+
+name: Deploy to Surge.sh
+
+on:
+    push:
+        branches: ["main", "Dev"]
+    workflow_dispatch: # Esto es spara que githubActions Pueda ejecutarse manualmente
+
+jobs:
+    build-and-deploy:
+        runs-on: ubuntu-latest
+        steps:
+
+            -   name: checkout code
+                uses: actions/checkout@v4
+                # Esto es una especie de git-clone pero para el servidor de GithubActions donde se ejecuta el deploy.
+
+            -   name: setup Node.js
+                uses: actions/setup-node@v4
+                with:
+                    node-version: "20"
+                # Esto instala Node.js con la version que deseamos, es necesario para poder descargar las dependencias que necesitamos.
+
+            -   name: install dependencies
+                run: npm ci
+                # Esto descarga las dependencias, ci usa exactamente la version del package-lock.json que esta.
+
+            -   name: build Vite app
+                run: npm run build
+                # Esto lo que hace es crear nuestro archivo dist, para la pagina estatica, pues convierte nuestra app en js, css, html
+
+            -   name: Deploy to Surge
+                run: |
+                    npm install --global surge
+                    if [ "${GITHUB_REF##*/}" == "main" ]; then
+                        surge ./dist ${{secrets.SURGE_DOMAIN}} --token ${{secrets.SURGE_TOKEN}}
+                    elif [ "${GITHUB_REF##*/}" == "Dev" ]; then
+                        surge ./dist ${{secrets.SURGE_DEV_DOMAIN}} --token ${{secrets.SURGE_TOKEN}}
+                    fi
+                # Esto Sube nuestro proyecto a los servidores de Surge.
+
+            
+            
+
+            
+
