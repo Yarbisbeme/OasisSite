@@ -7,7 +7,7 @@ const navLinks = [
   { name: "Misión", href: "#mission" },
   { name: "SANANOS", href: "#sananos" },
   { name: "Congresos", href: "#congress" },
-  { name: "Misiones", href: "#missions" },
+  { name: "Nosotros", href: "#missions" },
   { name: "Ministerios", href: "#ministries" },
 ];
 
