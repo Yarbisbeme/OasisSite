@@ -69,7 +69,7 @@ const CongressSection = () => {
             <span className="inline-block px-4 py-2 bg-blue-100 text-blue-600 font-medium rounded-full text-sm tracking-wider uppercase mb-6">
               Próximos Eventos
             </span>
-            <h2 className="text-4xl lg:text-6xl font-black text-gray-900 mb-4 tracking-tight">
+            <h2 className="text-6xl lg:text-8xl font-black text-gray-900 mb-4 tracking-tight">
               EVENTOS
               <span className="text-blue-600 block">ESPECIALES</span>
             </h2>
@@ -80,6 +80,15 @@ const CongressSection = () => {
             <Card className="border-0 shadow-2xl bg-white/80 backdrop-blur-sm overflow-hidden">
               <CardContent className="p-0">
                 <div className="grid lg:grid-cols-2 gap-0">
+                  {/* Visual Section - Image */}
+                  <div className="relative overflow-hidden">
+                    <img 
+                      src="CongresoCaballeros.png"
+                      alt="Congreso de Varones - Llamados"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
+                  </div>
                   {/* Congress Info */}
                   <div className="p-12 bg-gradient-to-br from-white to-blue-50/30">
                     <div className="mb-8">
@@ -139,16 +148,6 @@ const CongressSection = () => {
                     >
                       Más Información
                     </Button>
-                  </div>
-
-                  {/* Visual Section - Image */}
-                  <div className="relative overflow-hidden">
-                    <img 
-                      src="CongresoCaballeros.png"
-                      alt="Congreso de Varones - Llamados"
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent"></div>
                   </div>
                 </div>
               </CardContent>
