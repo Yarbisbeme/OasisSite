@@ -1,5 +1,5 @@
 import { motion, useInView } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -10,13 +10,44 @@ import {
   Baby, 
   Megaphone, 
   HandHelping,
-  Calendar,
-  Clock
+  ArrowRight,
+  ChevronRight,
+  Book
 } from "lucide-react";
 
+// Import ministry images
+import ministryYouth from "@/assets/ministry-youth.jpg";
+import ministryWomen from "@/assets/ministry-women.jpg";
+import ministryMen from "@/assets/ministry-men.jpg";
+import ministryChildren from "@/assets/ministry-children.jpg";
+import ministryEvangelism from "@/assets/ministry-evangelism.jpg";
+import ministryService from "@/assets/ministry-service.jpg";
+
 const MinistriesSection = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
+  const titleRef = useRef(null);
+  const gridRef = useRef(null);
+  const ctaRef = useRef(null);
+  
+  const titleInView = useInView(titleRef, { once: true, margin: "-50px" });
+  const gridInView = useInView(gridRef, { once: true, margin: "-100px" });
+  const ctaInView = useInView(ctaRef, { once: true, margin: "-50px" });
+
+  const [showAll, setShowAll] = useState(false);
+  const [cardsToShow, setCardsToShow] = useState(6); // por defecto en pantallas grandes
+
+  useEffect(() => {
+    const updateCardsToShow = () => {
+      if (window.innerWidth < 768) {
+        setCardsToShow(4);
+      } else {
+        setCardsToShow(6);
+      }
+    };
+
+    updateCardsToShow();
+    window.addEventListener("resize", updateCardsToShow);
+    return () => window.removeEventListener("resize", updateCardsToShow);
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -34,156 +65,222 @@ const MinistriesSection = () => {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.6 },
+      transition: { duration: 0.5 },
     },
   };
 
   const ministries = [
-    {
-      name: "Ministerio de Jóvenes",
-      icon: Users,
-      description: "Formando la nueva generación de líderes cristianos con pasión por Dios",
-      leader: "Aneudy Ruiz",
-      color: "primary"
-    },
-    {
-      name: "Ministerio de Damas",
-      icon: Crown,
-      description: "Mujeres virtuosas que impactan su familia y comunidad",
-      leader: "Yokasta",
-      color: "accent"
-    },
-    {
-      name: "Ministerio de Caballeros",
-      icon: Heart,
-      description: "Hombres de fe comprometidos con su llamado espiritual",
-      leader: "Alexander de la Rosa",
-      color: "primary"
-    },
-    {
-      name: "Ministerio de Niños",
-      icon: Baby,
-      description: "Sembrando semillas de fe en los corazones más pequeños",
-      leader: "Crissany",
-      color: "accent"
-    },
-    {
-      name: "Ministerio de Evangelismo",
-      icon: Megaphone,
-      description: "Llevando las buenas nuevas a cada rincón de nuestra comunidad",
-      leader: "Roman Gonzalez",
-      color: "primary"
-    },
-    {
-      name: "Ministerio de Dorcas",
-      icon: HandHelping,
-      description: "Sirviendo a los necesitados con amor y compasión cristiana",
-      leader: "Hermana Rosa Jiménez",
-      color: "accent"
-    }
-  ];
+  {
+    name: "Pastoral de Jóvenes",
+    icon: Users,
+    description: "Guiando a la juventud hacia un encuentro personal con Cristo, formando líderes y fomentando el servicio.",
+    leader: "Pastor de Jóvenes y equipo",
+    image: ministryYouth,
+    bgColor: "from-blue-600/20 to-purple-600/20",
+    accent: "text-blue-400"
+  },
+  {
+    name: "Pastoral de Damas",
+    icon: Crown,
+    description: "Mujeres de fe que crecen en su discipulado y sirven activamente en la iglesia y comunidad.",
+    leader: "Líder de Damas",
+    image: ministryWomen,
+    bgColor: "from-pink-600/20 to-rose-600/20",
+    accent: "text-pink-400"
+  },
+  {
+    name: "Pastoral de Hombres",
+    icon: Heart,
+    description: "Hombres comprometidos con Cristo, su familia y la iglesia, fortaleciendo su liderazgo espiritual.",
+    leader: "Pastor de Hombres",
+    image: ministryMen,
+    bgColor: "from-green-600/20 to-emerald-600/20",
+    accent: "text-green-400"
+  },
+  {
+    name: "Pastoral de Niños y Adolescentes",
+    icon: Baby,
+    description: "Discipulando a niños y adolescentes para que crezcan en la Palabra y en el amor de Dios.",
+    leader: "Coordinador de Niños y Adolescentes",
+    image: ministryChildren,
+    bgColor: "from-yellow-600/20 to-orange-600/20",
+    accent: "text-yellow-400"
+  },
+  {
+    name: "Ministerio de Evangelismo",
+    icon: Megaphone,
+    description: "Compartiendo el mensaje de salvación en Villa Sabana Toro y zonas aledañas.",
+    leader: "Equipo de Evangelismo",
+    image: ministryEvangelism,
+    bgColor: "from-red-600/20 to-pink-600/20",
+    accent: "text-red-400"
+  },
+  {
+    name: "Ministerio de Adoración",
+    icon: HandHelping,
+    description: "Guiando a la congregación a la presencia de Dios a través de la música y la alabanza.",
+    leader: "Director de Adoración",
+    image: ministryService,
+    bgColor: "from-purple-600/20 to-indigo-600/20",
+    accent: "text-purple-400"
+  },
+  {
+    name: "Ministerio de Oración",
+    icon: HandHelping,
+    description: "Intercediendo por la iglesia y la comunidad, fortaleciendo la fe mediante cadenas de oración.",
+    leader: "Coordinador de Oración",
+    image: ministryService,
+    bgColor: "from-indigo-600/20 to-blue-600/20",
+    accent: "text-indigo-400"
+  },
+  {
+    name: "Ministerio de Finanzas",
+    icon: HandHelping,
+    description: "Administrando con integridad los recursos de la iglesia para el avance del Reino de Dios.",
+    leader: "Tesorero de la Iglesia",
+    image: ministryService,
+    bgColor: "from-emerald-600/20 to-teal-600/20",
+    accent: "text-emerald-400"
+  },
+  {
+    name: "Ministerio de Educación Cristiana",
+    icon: Book,
+    description: "Capacitando y formando líderes y miembros mediante estudios bíblicos y programas educativos.",
+    leader: "Director de Educación Cristiana",
+    image: ministryService,
+    bgColor: "from-orange-600/20 to-amber-600/20",
+    accent: "text-orange-400"
+  },
+  {
+    name: "Ministerio de Dorcas",
+    icon: HandHelping,
+    description: "Sirviendo a los necesitados con amor cristiano, siguiendo el ejemplo bíblico de Dorcas.",
+    leader: "Coordinador de Dorcas",
+    image: ministryService,
+    bgColor: "from-rose-600/20 to-red-600/20",
+    accent: "text-rose-400"
+  }
+];
+
+
 
   return (
-    <section id="ministries" className="py-20 bg-background">
-      <div className="container mx-auto px-4" ref={ref}>
+    <section id="ministries" className="py-12 bg-white relative overflow-hidden">
+      {/* Línea decorativa superior */}
+      <div className="absolute top-0 left-0 right-0 h-1 bg-gradient-to-r from-blue-500 to-purple-500"></div>
+
+      <div className="container mx-auto px-4">
         <motion.div
+          ref={titleRef}
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="text-center mb-16"
+          animate={titleInView ? "visible" : "hidden"}
+          className="text-center mb-10 relative z-10"
         >
-          <motion.div variants={itemVariants} className="flex justify-center mb-4">
-            <Badge variant="secondary" className="text-lg px-6 py-2">
-              <Users className="mr-2 h-5 w-5 text-primary" />
-              Nuestros Ministerios
+          <motion.div variants={itemVariants} className="mb-2">
+            <Badge variant="outline" className="text-sm px-3 py-1 text-blue-600 border-blue-200">
+              <Users className="mr-2 h-4 w-4" />
+              MINISTERIOS
             </Badge>
           </motion.div>
           
-          <motion.h2 variants={itemVariants} className="text-4xl md:text-5xl font-bold text-foreground mb-6">
-            Encuentra Tu Lugar de Servicio
+          <motion.h2 
+            variants={itemVariants} 
+            className="text-3xl md:text-4xl font-bold text-slate-800 mb-4"
+          >
+            Encuentra Tu Lugar Para Servir
           </motion.h2>
           
-          <motion.p variants={itemVariants} className="text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
-            Cada ministerio es una oportunidad para crecer espiritualmente, servir a otros 
-            y usar los dones que Dios te ha dado para Su gloria.
-          </motion.p>
+          <motion.div 
+            variants={itemVariants} 
+            className="max-w-2xl mx-auto mb-8"
+          >
+            <p className="text-slate-600">
+              Descubre cómo puedes usar tus dones y talentos para impactar vidas en nuestra comunidad
+            </p>
+          </motion.div>
         </motion.div>
 
         {/* Ministries Grid */}
         <motion.div
+          ref={gridRef}
           variants={containerVariants}
           initial="hidden"
-          animate={isInView ? "visible" : "hidden"}
-          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
+          animate={gridInView ? "visible" : "hidden"}
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4 mb-10 relative z-10"
         >
-          {ministries.map((ministry, index) => (
-            <motion.div key={ministry.name} variants={itemVariants}>
-              <Card className={`p-6 h-full hover:shadow-clean transition-all duration-300 border-2 ${
-                ministry.color === 'primary' 
-                  ? 'border-primary/20 hover:border-primary/40' 
-                  : 'border-accent/20 hover:border-accent/40'
-              }`}>
-                <div className="flex items-center mb-4">
-                  <div className={`p-3 rounded-lg mr-4 ${
-                    ministry.color === 'primary' 
-                      ? 'bg-primary/10' 
-                      : 'bg-accent/10'
-                  }`}>
-                    <ministry.icon className={`h-6 w-6 ${
-                      ministry.color === 'primary' 
-                        ? 'text-primary' 
-                        : 'text-accent'
-                    }`} />
-                  </div>
-                  <h3 className="text-xl font-bold text-foreground">
-                    {ministry.name}
-                  </h3>
-                </div>
-                
-                <p className="text-muted-foreground mb-4 leading-relaxed">
-                  {ministry.description}
-                </p>
-                
-                <div className="space-y-3 mb-6">               
-                  <div className="flex items-center text-sm text-muted-foreground">
-                    <Users className="mr-2 h-4 w-4" />
-                    <span>{ministry.leader}</span>
+          {(showAll ? ministries : ministries.slice(0, cardsToShow)).map((ministry, index) => (
+            <motion.div key={ministry.name} variants={itemVariants} className="group">
+              <Card className="overflow-hidden border-0 shadow-sm hover:shadow-md transition-all duration-300 text-center h-full flex flex-col">
+                <div className="relative aspect-square overflow-hidden bg-slate-100">
+                  <div className="absolute inset-0 flex items-center justify-center bg-blue-50">
+                    <ministry.icon className="h-10 w-10 text-blue-500" />
                   </div>
                 </div>
                 
-                <Button 
-                  variant={ministry.color === 'primary' ? 'default' : 'secondary'} 
-                  className="w-full"
-                >
-                  Más Información
-                </Button>
+                <div className="p-4 flex flex-col flex-grow">
+                  <h3 className="text-slate-800 font-semibold text-sm mb-1">{ministry.name}</h3>
+                  <p className="text-slate-500 text-xs mb-3 line-clamp-2 flex-grow">
+                    {ministry.description}
+                  </p>
+                  <Button 
+                    size="sm"
+                    variant="outline"
+                    className="w-full text-xs border-slate-200 text-blue-600 hover:bg-blue-50 hover:text-blue-700 mt-auto"
+                  >
+                    Más Información
+                    <ChevronRight className="ml-1 h-3 w-3" />
+                  </Button>
+                </div>
               </Card>
             </motion.div>
           ))}
         </motion.div>
 
-        {/* Call to Action */}
-        <motion.div
+        {/* Botón para ver más/menos en móvil */}
+        <div className="mt-6 text-center md:hidden">
+          <Button 
+            onClick={() => setShowAll(!showAll)}
+            variant="outline"
+            className="px-4 py-2 text-blue-600 border-blue-200 hover:bg-blue-50"
+          >
+            {showAll ? "Ver menos" : "Ver todos"}
+          </Button>
+        </div>
+
+        {/* Call to Action - Diseño simplificado */}
+        <motion.div 
+          ref={ctaRef}
           variants={itemVariants}
-          className="text-center"
+          initial="hidden"
+          animate={ctaInView ? "visible" : "hidden"}
+          className="mt-12 pt-10 border-t border-slate-100"
         >
-          <Card className="p-8 bg-gradient-primary text-primary-foreground max-w-4xl mx-auto">
-            <h3 className="text-2xl font-bold mb-4">
-              ¿Sientes el llamado a servir?
-            </h3>
-            <p className="text-lg mb-6 opacity-90">
-              Cada don y talento tiene un propósito en el reino de Dios. 
-              Descubre cómo puedes usar tus habilidades para bendecir a otros.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center">
-              <Button size="lg" variant="secondary">
+          <div className="flex flex-col md:flex-row items-center justify-between max-w-5xl mx-auto">
+            <div className="md:w-1/2 mb-6 md:mb-0 text-left">
+              <h3 className="text-2xl md:text-3xl font-bold text-slate-800 mb-3">
+                ¿Quieres servir en un ministerio?
+              </h3>
+              <p className="text-slate-600 mb-0">
+                Descubre cómo puedes usar tus dones y talentos para impactar vidas en nuestra comunidad
+              </p>
+            </div>
+            
+            <div className="flex gap-4">
+              <Button 
+                className="bg-blue-600 hover:bg-blue-700 text-white px-6"
+              >
                 Quiero Servir
+                <ArrowRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button size="lg" variant="outline" className="border-white text-white hover:bg-white/10">
+              <Button 
+                variant="outline" 
+                className="border-slate-200 text-slate-700 hover:bg-slate-50 px-6"
+              >
                 Más Información
               </Button>
             </div>
-          </Card>
+          </div>
         </motion.div>
       </div>
     </section>
